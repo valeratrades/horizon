@@ -18,6 +18,7 @@
   libxrandr,
   libxcb,
   version,
+  gameBuildId,
 }:
 let
   # wgpu and winit open these with dlopen, so the linker never records them.
@@ -39,8 +40,8 @@ rustPlatform.buildRustPackage {
   cargoLock.lockFile = ../Cargo.lock;
 
   cargoBuildFlags = [
-    "--package=horizon-client"
-    "--bin=horizon-client"
+    "--package=horizon-official"
+    "--bin=horizon-official"
     "--package=horizon-client-lib"
     "--bin=horizon-ctl"
   ];
@@ -51,7 +52,13 @@ rustPlatform.buildRustPackage {
     udev
   ];
 
+  env.HORIZON_GAME_BUILD_ID = gameBuildId;
+
   doCheck = false;
+
+  postInstall = ''
+    mv $out/bin/horizon-official $out/bin/horizon-client
+  '';
 
   postFixup = lib.optionalString stdenv.hostPlatform.isLinux ''
     patchelf --add-rpath ${lib.makeLibraryPath dlopened} $out/bin/horizon-client

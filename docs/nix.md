@@ -10,6 +10,7 @@ copy of Minecraft 26.3, as everywhere else ([hosting.md](hosting.md), step 2).
 | `horizon-engine` | The server build of the game alone | Linux, macOS |
 | `horizon-prepare` | `horizon-prepare`, with a JDK 25 for the exporters it compiles | Linux, macOS |
 | `horizon-client` | The game and `horizon-ctl` | Linux, macOS |
+| `horizon-play` | Prepares once (from Prism Launcher's 26.3 instance when Prism is there), then starts `horizon-client` with no sign-in; saves in `~/.local/share/horizon-nix/game` | Linux, macOS |
 | `horizon-launcher` | The launcher in an FHS environment (it builds native mods with Cargo) | Linux |
 
 ```sh

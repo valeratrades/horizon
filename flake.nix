@@ -15,14 +15,16 @@
       # The game's packages, built from this workspace (nix/, docs/nix.md). Releases are tagged by
       # release.yml, which never uses this flake, so a build from it says which commit it is.
       version = "0-unstable-${builtins.substring 0 8 (self.lastModifiedDate or "19700101")}";
+      gameBuildId = self.rev or self.dirtyRev; # the sandbox has no git for horizon-mod-host's build.rs
       gamePackages = pkgs:
         let
-          call = pkgs.lib.callPackageWith (pkgs // packages // { inherit version; });
+          call = pkgs.lib.callPackageWith (pkgs // packages // { inherit version gameBuildId; });
           packages = {
             horizon-engine = call ./nix/horizon-engine.nix { };
             horizon-server = call ./nix/horizon-server.nix { };
             horizon-prepare = call ./nix/horizon-prepare.nix { };
             horizon-client = call ./nix/horizon-client.nix { };
+            horizon-play = call ./nix/horizon-play.nix { };
           };
         in packages;
     in {
